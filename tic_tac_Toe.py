@@ -69,7 +69,23 @@ def legal_moves(board):
 
 	return legal_moves
 
-def 
+def is_winner(board):
+	wins = ((0, 1, 2),
+			(3, 4, 5),
+			(6, 7, 8), 
+			(0, 4, 8),
+			(2, 4, 6),
+			(0, 3, 6),
+			(1, 4, 7),
+			(2, 5, 8))
+	for row in wins:
+		if board[row[0]] == board[row[1]] == board[row[2]]:
+			winner == board[row[0]]
+			return winner
+		if range(8) not in board:
+			return "TIE"
+		return None
+
 
 
 
