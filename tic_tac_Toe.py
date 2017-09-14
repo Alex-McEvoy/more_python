@@ -33,33 +33,38 @@ def create_board():
 	return board
 
 def display_board(board):
-	print '''\t\t\t   {} | {} | {}
-			   ---------
-			   {} | {} | {}
-			   ---------
-			   {} | {} | {}'''.format(board[0], board[1], board[2], 
-			   				   board[3], board[4], board[5], 
-			   				   board[6], board[7], board[8])
+	print '''\t{} | {} | {}
+\t---------
+\t{} | {} | {}
+\t---------
+\t{} | {} | {}'''.format(*board)
 def start_game():
 	print """Welcome to Tic-tac-toe! 
-			Get three in a row, secure fame and glory for your house!
-			The board will appear as such...."""
+Get three in a row, secure fame and glory for your house!
+The board will appear as such...."""
 	board = create_board()
 	display_board(board)
 
 	print """\nSelect your position of choice on the board by selecting 
 	the appropriate number\n"""
 
-	go_first()
+	answer, player,computer = go_first()
 
-	return board, answer 
+	return board, answer, player, computer
 	
 def go_first():
 	answer = ''
-	while answer not in ['y', 'n']:
-		answer = input("Would you like to go first? Answer y or n...\n").lower()
-
-	return answer
+	player = ''
+	computer = ''
+	while answer not in ('y', 'n'):
+		answer = raw_input("Would you like to go first? Answer y or n...\n").lower()
+	if answer == 'y':
+		player = "X"
+		computer = "O"
+	else:
+		player = "O"
+		computer = "X"
+	return answer, player, computer
 
 def legal_moves(board):
 	legal_moves = []
@@ -70,6 +75,7 @@ def legal_moves(board):
 	return legal_moves
 
 def is_winner(board):
+
 	wins = ((0, 1, 2),
 			(3, 4, 5),
 			(6, 7, 8), 
@@ -82,12 +88,48 @@ def is_winner(board):
 		if board[row[0]] == board[row[1]] == board[row[2]]:
 			winner == board[row[0]]
 			return winner
-		if range(8) not in board:
-			return "TIE"
-		return None
+	if not set(range(9)).intersection(board):
+		return "TIE"
+
+	return 0
+
+def human_move(board, player):
+	print 'Your turn, HUMAN!'
+	display_board(board)
+	answer = ''
+	while answer not in legal_moves(board):
+		answer = input('Please select a valid move from the board..')
+	board[answer - 1] = player
+	return board
+
+def computer_move(board, computer):
+	if 4 in legal_moves(board):
+		board[3] = computer
+	
 
 
 
+'''
+board, go_first, player, computer = start_game()
+display_board(board)
+print is_winner(board)
+'''
 
-board, go_first = start_game()
+board, go_first, player, computer = start_game()
+turn = "X"
+while not is_winner(board):
+	if turn == "X":
+		if player == "X":
+			board = human_move(board, player)
+		else:
+			board = computer_move(board, computer)
+		turn = "O"
+	else:
+		if player == "O":
+			board = human_move(board, player)
+		else:
+			board = computer_move(board, computer)
+		turn = "O"
+
+
 
