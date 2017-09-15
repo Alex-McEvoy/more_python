@@ -17,9 +17,7 @@
 
 #declare the outcome (tie, comp wins, player wins)
 
-#Let's get some global variables in there
 
-BLANK = " "
 
 
 
@@ -77,6 +75,7 @@ def legal_moves(board):
 	return legal_moves
 
 def is_winner(board):
+	winner = ''
 	wins = ((0, 1, 2),
 			(3, 4, 5),
 			(6, 7, 8), 
@@ -86,14 +85,11 @@ def is_winner(board):
 			(1, 4, 7),
 			(2, 5, 8))
 	for row in wins:
-		winner = ''
-#		print str(type(board[row[0]])) + str(type(board[row[1]])) + str(type(board[row[2]]))
-		if str(board[row[0]]) == str(board[row[0]]) == str(board[row[0]]):
-			winner == board[row[0]]
+		if board[row[0]] == board[row[1]] == board[row[2]]:
+			winner = board[row[0]]
 			return winner
-	if not set(range(9)).intersection(board):
+	if len(set(range(9)).intersection(board)) == 0:
 		return "TIE"
-
 	return 0
 
 def human_move(board):
@@ -106,8 +102,28 @@ def human_move(board):
 	return answer
 
 def computer_move(board, computer, player):
-	if 4 in legal_moves(board):
-		move = 4
+	nice_moves = (4, 0, 2, 6, 8, 1, 3, 5, 7)
+	#see if any move will result in a win
+	for move in legal_moves(board):
+		board[move] = computer
+		if is_winner(board) == computer:
+			print 'Computer takes {}!'.format(str(move))
+			return move
+		#return the board back if doesnt result in a win
+		board[move] = move
+
+	#else see if any move will result in opponent winning
+	for move in legal_moves(board):
+		board[move] = player
+		if is_winner(board) == player:
+			print 'Computer takes {}!'.format(str(move))
+			return move
+		board[move] = move
+	#If not then make move based on best posible moves available
+	for move in nice_moves:
+		if move in legal_moves(board):
+			print 'Computer takes {}!'.format(str(move))
+			return move
 		
 	return move
 
@@ -120,26 +136,34 @@ board, go_first, player, computer = start_game()
 display_board(board)
 print is_winner(board)
 '''
+def main():
+	board, player, computer = start_game()
+	turn = "X"
 
-board, player, computer = start_game()
-turn = "X"
-
-while not is_winner(board):
-	if turn == "X":
-		if player == "X":
-			move = human_move(board)
-			board[move] = player
+	while is_winner(board) == 0:
+		if turn == "X":
+			if player == "X":
+				move = human_move(board)
+				board[move] = player
+			else:
+				move = computer_move(board, computer, player)
+				board[move] = computer
+			turn = "O"
 		else:
-			move = computer_move(board, computer)
-		turn = "O"
-	else:
-		if player == "O":
-			move = human_move(board)
-			board[move] = player
-		else:
-			move = computer_move(board, computer, player)
-			board[move] = computer
-		turn = "X"
-	print display_board(board)
-
+			if player == "O":
+				move = human_move(board)
+				board[move] = player
+			else:
+				move = computer_move(board, computer, player)
+				board[move] = computer
+			turn = "X"
+	winner = is_winner(board)
+	print winner
+	if winner == computer:
+		print "The computer won"
+	elif winner == player:
+		print "You won!!"
+	elif winner == 'TIE':
+		print 'Dang, looks like a Tie..'
+main()
 
