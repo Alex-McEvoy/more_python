@@ -16,16 +16,21 @@ to delete a character, hover over it with the cursor, and hit ___5___. '''
 
 easy_answers = ['vimtutor', 'text', ':q!', ':wq', 'x']
 
-medium = ''''''
+medium = '''A ___1___ is any piece of data written directly into a programs code. This could include
+a string or an integer, any piece of information that is not input by a user. In C++, the phrase,
+cout << "Hello World";
+the operator << is referred to as the stream ___2___ operator. C++ is known as a ___3___ level programming
+language, which means it is closer to human speech than machine code. To use the cin or cout commands in C++,
+the preprocessor directive #include ___4___ must be included. '''
 
-medium_answers = ['world', 'Python', 'print', 'HTML']
+medium_answers = ['literal', 'insertion', 'high', '<iostream>']
 
-hard = '''A ___1___ is created with the def keyword. You specify the inputs a ___1___ takes by
-adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
-don't specify the value to return. ___2___ can be standard data types such as string, number, dictionary,
-tuple, and ___4___ or can be more complicated such as objects and lambda functions.'''
+hard = '''Rick's favorite ride in anatomy park was Pirates of the ___1___. Morty's dog in season 1 was originally 
+named snuffles, but later preferred to be called ___2___. Later, in the inception episode, Rick and Morty eventually 
+employ the help of scary ___3___ to incept Morty's math teacher into giving him an A. The helpful blue creatures named 
+Mr. Meseeks eventually confide that existence is ___4___ to them. '''
 
-hard_answers = ['world', 'Python', 'print', 'HTML']
+hard_answers = ['pancreas', 'snowball', 'Terry', 'pain']
 
 #Inputs
 	#The player will enter one to many strings corresponding to a list of correct answers
@@ -80,7 +85,7 @@ def game_over(player_answers, tries_left, correct_answers):
 		return True
 
 def word_in_key_words(word, key_words):
-	#Searches 
+	#Searches for our word within a list of keywords to see if we should convert it.
 	for item in key_words:
 		if item in word:
 			return item
@@ -88,6 +93,7 @@ def word_in_key_words(word, key_words):
 	return None
 
 def print_paragraph(paragraph, player_answers):
+	#prints our paragraph with the already correctly guessed words filled in
 	key_words = ['___1___', '___2___', '___3___', '___4___', '___5___']
 	#Only convert the key words the player has already successfully guessed
 	key_words = key_words[:len(player_answers)]
@@ -106,6 +112,7 @@ def print_paragraph(paragraph, player_answers):
 
 
 def ask_question(correct_answers, player_answers):
+	#Asks our player to fill in the appropriate blank, based on how many answers have already been correctly guessed
 	user_answer = ''
 	answer_selector = ['___1___', '___2___', '___3___', '___4___', '___5___']
 
@@ -142,6 +149,7 @@ def play_game(paragraph, correct_answers):
 
 user_difficulty = difficulty()
 
+#Use argument unpacking to pass in 2 arguments to play_game()
 play_game(*user_difficulty)
 
 
