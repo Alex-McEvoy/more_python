@@ -32,15 +32,9 @@ Mr. Meseeks eventually confide that existence is ___4___ to them. '''
 
 hard_answers = ['pancreas', 'snowball', 'Terry', 'pain']
 
-#Inputs
-	#The player will enter one to many strings corresponding to a list of correct answers
-#outputs
-	#The rules of the game
-	#the paragraph with numbered blanks
-	#Whether or not the previous answer was correct
-	#The number of tries left
-	#the paragraph with already guessed blanks filled in
-	#congratulations or try again message
+
+
+
 
 #Determine difficulty of game
 def difficulty():
@@ -63,6 +57,7 @@ def difficulty():
 	
 
 def any_tries_left(tries_left):
+	#See if any tries left using the tries_left argument
 	if tries_left == 0:
 		print "You've failed too many straight guesses!  Game over!"
 		return False
@@ -147,16 +142,13 @@ def play_game(paragraph, correct_answers):
 					
 
 
+#First determine difficulty, then play the game.
+
 user_difficulty = difficulty()
 
 #Use argument unpacking to pass in 2 arguments to play_game()
 play_game(*user_difficulty)
 
-
-
-#x = ['world', 'Python', 'print', 'HTML']
-#y = ['world', 'Python', 'print', 'HTML']
-#print game_over(x, 0, y)
 
 
 
