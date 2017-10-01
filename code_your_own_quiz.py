@@ -38,7 +38,8 @@ hard_answers = ['pancreas', 'snowball', 'Terry', 'pain']
 
 #Determine difficulty of game
 def difficulty():
-	#Determines which paragraph and answer set to use, based on user input
+	#Determines which paragraph and answer set to use, based on user input. Returns
+	#both a variable for the selected paragraph and the corresponding answer list
 	user_choices = {
 					'easy' : [easy, easy_answers],
 					'medium' : [medium, medium_answers],
@@ -57,30 +58,37 @@ def difficulty():
 	
 
 def any_tries_left(tries_left):
-	#See if any tries left using the tries_left argument
+	#Takes in the number of tries left and prints the corresponding message for each
+	#Returns true if there are any tries left and false if there are no tries left
+	min_tries = 2
+	max_tries = 5
+
 	if tries_left == 0:
 		print "You've failed too many straight guesses!  Game over!"
 		return False
-	elif tries_left in range(2,5):
+	elif tries_left in range(min_tries,max_tries):
 		print "That isn't the correct answer, Let's try again; you have {} trys left".format(tries_left)
 	elif tries_left == 1:
 		print "That isn't the correct answer! You only have 1 try left!  Make it count!"
 
 	return True
 
-def game_over(player_answers, tries_left, correct_answers):
+def game_over(player_answers, tries_left, correct_answers, paragraph):
+	#Takes in the players answers, number of tries left, the correct answer list and the current paragraph
 	#Here a return value of True means that it's time to end the game, False means continue
 	#use any_tries_left to see if we're out of tries
 	if any_tries_left(tries_left):
 		#Check to see if all answers are accounted for
 		if player_answers == correct_answers:
+			print print_paragraph(paragraph, player_answers)
 			print "You won!"
 			return True
 	else:
 		return True
 
 def word_in_key_words(word, key_words):
-	#Searches for our word within a list of keywords to see if we should convert it.
+	#Checks to see if the word passed in is in the list of key_words, if it is, returns
+	#that value from the key_words list. 
 	for item in key_words:
 		if item in word:
 			return item
@@ -88,7 +96,8 @@ def word_in_key_words(word, key_words):
 	return None
 
 def print_paragraph(paragraph, player_answers):
-	#prints our paragraph with the already correctly guessed words filled in
+	#Takes in our template paragraph and the list of paragraph answers, replacing the corresponding 
+	#numbers in the paragraph with our users already guessed answers. Returns the completed paragraph
 	key_words = ['___1___', '___2___', '___3___', '___4___', '___5___']
 	#Only convert the key words the player has already successfully guessed
 	key_words = key_words[:len(player_answers)]
@@ -107,7 +116,8 @@ def print_paragraph(paragraph, player_answers):
 
 
 def ask_question(correct_answers, player_answers):
-	#Asks our player to fill in the appropriate blank, based on how many answers have already been correctly guessed
+	#Takes in the list of player answers and checks it against the correct answers to determine which
+	#question should come next. Returns the correct answer or None if incorrect
 	user_answer = ''
 	answer_selector = ['___1___', '___2___', '___3___', '___4___', '___5___']
 
@@ -123,19 +133,22 @@ def ask_question(correct_answers, player_answers):
 
 
 def play_game(paragraph, correct_answers):
+	#Receives a paragraph and correct answer list. Loops through the paragraph asking the user to fill
+	#in the blanks untill the number of tries is 0 or the user has guessed all the correct answers.
 	#print out the rules to the player
 	print "You will get 5 guesses per problem"
 	player_answers = []
-	tries_left = 5
+	max_tries = 5
+	tries_left = max_tries
 	#while the player has not correctly entered all of the answers or used all their tries
-	while not game_over(player_answers, tries_left, correct_answers):
+	while not game_over(player_answers, tries_left, correct_answers, paragraph):
 		#print out the paragraph with the correct answers
 		print print_paragraph(paragraph, player_answers)
 		#prompt the user for the next answer
 		answer = ask_question(correct_answers, player_answers)
 		if answer:
 			player_answers.append(answer)
-			tries_left = 5
+			tries_left = max_tries
 		else:
 			#Reduce the number of tries
 			tries_left -= 1
